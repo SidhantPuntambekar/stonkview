@@ -34,6 +34,7 @@ const User = require("./models/user.js");
 const Stock = require("./models/stocks.js")
 const Message = require("./models/message.js")
 
+var port = process.env.PORT || 3001;
 
 require('./passport-config')(passport);
 const { ensureAuthenticated, forwardAuthenticated } = require('./resources/js/auth');
@@ -63,7 +64,7 @@ app.use(methodOverride('_method'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}))
 
-// 
+ 
 function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
@@ -611,7 +612,7 @@ io.on('connection', () =>{
 })
 
 // testing something if probably can delete this 
-var server = http.listen(3001, () => {
+var server = http.listen(port, () => {
     console.log('server is running on port', server.address().port);
 });
 module.exports = server
