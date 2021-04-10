@@ -36,7 +36,7 @@ const Message = require("./models/message.js")
 
 
 require('./passport-config')(passport);
-const { ensureAuthenticated, forwardAuthenticated } = require('../project/resources/js/auth');
+const { ensureAuthenticated, forwardAuthenticated } = require('./resources/js/auth');
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/")); //This line is necessary for us to use relative paths and access our resources directory
