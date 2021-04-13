@@ -34,9 +34,10 @@ const User = require("./models/user.js");
 const Stock = require("./models/stocks.js")
 const Message = require("./models/message.js")
 
+var port = process.env.PORT || 3001;
 
 require('./passport-config')(passport);
-const { ensureAuthenticated, forwardAuthenticated } = require('../project/resources/js/auth');
+const { ensureAuthenticated, forwardAuthenticated } = require('./resources/js/auth');
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/")); //This line is necessary for us to use relative paths and access our resources directory
@@ -612,7 +613,7 @@ io.on('connection', () =>{
 })
 
 // testing something if probably can delete this 
-var server = http.listen(3001, () => {
+var server = http.listen(port, () => {
     console.log('server is running on port', server.address().port);
 });
 module.exports = server
