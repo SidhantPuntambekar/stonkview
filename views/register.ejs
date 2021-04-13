@@ -26,6 +26,10 @@
         </div>
       </br>
         <h1 class="h3 mb-3 font-weight-normal">Create Your Account</h1>
+        <% if (errors) { %>
+          <% console.log(errors) %>
+          <h4><%- errors[0] %></h4>
+        <% } %> 
         <label for="name" class="sr-only">Name</label>
         <input
           type="text"

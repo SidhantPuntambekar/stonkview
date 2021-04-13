@@ -34,10 +34,9 @@ const User = require("./models/user.js");
 const Stock = require("./models/stocks.js")
 const Message = require("./models/message.js")
 
-var port = process.env.PORT || 3001;
 
 require('./passport-config')(passport);
-const { ensureAuthenticated, forwardAuthenticated } = require('./resources/js/auth');
+const { ensureAuthenticated, forwardAuthenticated } = require('../project/resources/js/auth');
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/")); //This line is necessary for us to use relative paths and access our resources directory
@@ -64,7 +63,7 @@ app.use(methodOverride('_method'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}))
 
- 
+
 function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
@@ -212,14 +211,15 @@ app.put('/', ensureAuthenticated, (req, res) => {
     ************* LOGIN ************
     ******************************** */
 app.get('/login', forwardAuthenticated, (req, res) => {
-    res.render('login.ejs')
+    res.render('login.ejs', {errors: false})
 })
 
 app.post('/login', (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login',
-        failureFlash: true
+        failureFlash: true,
+        errors: 'Wrong username or password'
     }) (req, res, next)
 });
 
@@ -227,7 +227,7 @@ app.post('/login', (req, res, next) => {
     *********** REGISTER ***********
     ******************************** */
 app.get('/register', forwardAuthenticated, (req, res) => {
-    res.render('register.ejs')
+    res.render('register.ejs', {errors: false})
 })
 
 app.post('/register', (req, res) => {
@@ -237,7 +237,7 @@ app.post('/register', (req, res) => {
     let errors = [];
 
     if (!name || !email || !password) {
-      errors.push({ msg: 'Please enter all fields' });
+      errors.push('Please enter all fields');
     }
   
     if (errors.length > 0) {
@@ -251,7 +251,7 @@ app.post('/register', (req, res) => {
     else {
       User.findOne({ email: email }).then(user => {
         if (user) {
-          errors.push({ msg: 'Email already exists' });
+          errors.push('Email already exists');
           res.render('register', {
             errors,
             name,
@@ -612,7 +612,7 @@ io.on('connection', () =>{
 })
 
 // testing something if probably can delete this 
-var server = http.listen(port, () => {
+var server = http.listen(3001, () => {
     console.log('server is running on port', server.address().port);
 });
 module.exports = server
